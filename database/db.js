@@ -5,9 +5,9 @@ dotenv.config();
 const bd = process.env.POSTGRES_DATABASE;
 const usuario = process.env.POSTGRES_USER;
 const password = process.env.POSTGRES_PASSWORD;
-
+const hostvercel = process.env.POSTGRES_HOST;
 const db = new Sequelize(bd, usuario, password,{
-    host:'ep-long-moon-a4x0q0np-pooler.us-east-1.aws.neon.tech',
+    host:hostvercel,
     dialect: 'postgres',
     dialectModule:pg,
     dialectOptions: {
