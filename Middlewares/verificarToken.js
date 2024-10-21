@@ -12,9 +12,11 @@ const secretKey = process.env.SECRET_KEY;
   }
 
   const token = autorizacion.split(' ')[1];  // Extraer el token del encabezado
+  console.log(req.headers['authorization']);  // Verificar que el encabezado está llegando
 
   try {
     const decoded = jwt.verify(token, secretKey);
+    
     req.userId = decoded.id;  // Guarda el ID del usuario decodificado en la solicitud
     next();  // Continuar con la solicitud si el token es valido
   } catch (error) {
