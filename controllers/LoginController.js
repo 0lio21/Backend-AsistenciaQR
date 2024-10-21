@@ -16,23 +16,22 @@ const login = async (req, res) => {
       const isMatch = await bcrypt.compare(password, profesor.password);
       if (isMatch) {
         // Autenticación exitosa, generar el token JWT
-        const token = jwt.sign({ id: profesor.id }, secretKey, { expiresIn: '10m' });
-        return res.status(200).json({
-          nombre: profesor.nombre,
-          apellido: profesor.apellido,
-          token: token
-        });
+        const token = jwt.sign({ id: profesor.id }, secretKey, { expiresIn: '20m' });  // Token válido por 20min
+        return res.status(200).json({ nombre: profesor.nombre, apellido: profesor.apellido, token });
         
       } else {
-        return res.status(401).json({ message: 'Credenciales inválidas o usuario inexistente' });
+        return res.status(401).json({ message: 'Credenciales inválidas' });
       }
     } else {
-      return res.status(404).json({ message: 'Credenciales inválidas o usuario inexistente' });
+      return res.status(404).json({ message: 'Usuario no encontrado' });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-
 export default login;
+
+
+
+
