@@ -1,6 +1,8 @@
 import { Sequelize } from "sequelize";
 import dotenv from 'dotenv';
 import pg from "pg"
+import mysql2 from 'mysql2';  // Importa mysql2 usando ES Modules
+
 dotenv.config();
 const bd = process.env.POSTGRES_DATABASE;
 const usuario = process.env.POSTGRES_USER;
@@ -16,7 +18,9 @@ const db = new Sequelize(bd, usuario, password,{
           rejectUnauthorized: false // puedes cambiar esto según tu configuración de SSL
         }
       }
-})
+}) 
+
+     
 
 export default db;
 

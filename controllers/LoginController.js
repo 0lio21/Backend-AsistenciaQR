@@ -6,27 +6,26 @@ import dotenv from 'dotenv';
 dotenv.config();
 const secretKey = process.env.SECRET_KEY;  
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
   const { correo, password } = req.body;
+  console.log(correo, password);
   try {
-    const profesor = await TablaProfesor.findOne({ where: { correo } });
+      const profesor = await TablaProfesor.findOne({ where: { correo } });
 
-    if (profesor) {
-      // Comparar la contraseña ingresada con la contraseña hasheada almacenada
-      const isMatch = await bcrypt.compare(password, profesor.password);
-      if (isMatch) {
-        // Autenticación exitosa, generar el token JWT
-        const token = jwt.sign({ id: profesor.id }, secretKey, { expiresIn: '20m' });  // Token válido por 20min
-        return res.status(200).json({ nombre: profesor.nombre, apellido: profesor.apellido, token });
-        
-      } else {
-        return res.status(401).json({ message: 'Credenciales inválidas' });
+      if (!profesor) {
+          return res.status(404).json({ message: 'Usuario no encontrado' });
       }
-    } else {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
-    }
+
+      const validPassword = await bcrypt.compare(password, profesor.password);
+      if (!validPassword) {
+          return res.status(401).json({ message: 'Contraseña incorrecta' });
+      }
+                                    /*header*/    /*secretkey*/   /*expiracion */
+      const token = jwt.sign({ id: profesor.id }, secretKey, { expiresIn: '20m' });  // Token con 20 minutos de duración
+
+      return res.status(200).json({ token, decoded });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: 'Error en el servidor' });
   }
 };
 
