@@ -12,38 +12,35 @@ function formatTime(time) {
 
 export const insertarHorario = async (req, res) => {
   const { profesorId, cursoId, materiaId, dia, fechaInicio, fechaFin } = req.body;
-
+  console.log(profesorId, cursoId, materiaId, dia, fechaInicio, fechaInicio);
   try {
-    // Buscar el Profesor por ID
+    // Buscar el Profesor por ID en la tabla de profesores
     const profesor = await TablaProfesor.findByPk(profesorId);
     if (!profesor) {
       return res.status(404).json({ error: 'Profesor no encontrado' });
     }
 
-    // Buscar el Curso por ID
-    const curso = await TablaCurso.findByPk(cursoId);
-    if (!curso) {
-      return res.status(404).json({ error: 'Curso no encontrado' });
-    }
-
-    // Buscar la Materia por ID
+    // Buscar el Curso por ID en la tabla de cursos
+    const curso = await TablaCurso.findOne({
+      where: { cursoid: cursoId },
+      attributes: ['cursoid', 'anio', 'division']  // Esto está correcto
+    });
+      
+  
+    // Buscar la Materia por ID en la tabla de materias
     const materia = await TablaMateria.findByPk(materiaId);
     if (!materia) {
       return res.status(404).json({ error: 'Materia no encontrada' });
     }
 
-    // Formatear fechaInicio y fechaFin en HH:MM:SS
-    const formattedFechaInicio = formatTime(fechaInicio);  // Formatear a HH:MM:SS
-    const formattedFechaFin = formatTime(fechaFin);        // Formatear a HH:MM:SS
-
-    // Insertar el nuevo horario
+    // Insertar el nuevo horario en la tabla de horarios
     const nuevoHorario = await TablaHorario.create({
       profesorid: profesorId,
       cursoid: cursoId,
       materiaid: materiaId,
       dia: dia,
-      fechainicio: formattedFechaInicio,
-      fechafin: formattedFechaFin
+      fechainicio: fechaInicio,
+      fechafin: fechaFin
     });
 
     return res.status(201).json({ message: 'Horario insertado exitosamente', nuevoHorario });
