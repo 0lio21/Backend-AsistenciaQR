@@ -21,7 +21,7 @@ export const login = async (req, res) => {
       }
 
       const token = jwt.sign({ id: profesor.id }, secretKey, { expiresIn: '20m' });  // Token con 20 minutos de duración
-      return res.status(200).json({ token });
+      return res.status(200).json({profesor, token});
 
   } catch (error) {
       console.error('Error en el servidor:', error);  // Para depurar errores en la consola
