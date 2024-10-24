@@ -4,11 +4,10 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const secretKey = process.env.SECRET_KEY;  
+const secretKey = process.env.SECRET_KEY;
 
 export const login = async (req, res) => {
   const { correo, password } = req.body;
-  console.log(correo, password);
   try {
       const profesor = await TablaProfesor.findOne({ where: { correo } });
 
@@ -20,17 +19,14 @@ export const login = async (req, res) => {
       if (!validPassword) {
           return res.status(401).json({ message: 'Contraseña incorrecta' });
       }
-                                    /*header*/    /*secretkey*/   /*expiracion */
-      const token = jwt.sign({ id: profesor.id }, secretKey, { expiresIn: '20m' });  // Token con 20 minutos de duración
 
-      return res.status(200).json({ token, decoded });
+      const token = jwt.sign({ id: profesor.id }, secretKey, { expiresIn: '20m' });  // Token con 20 minutos de duración
+      return res.status(200).json({ token });
+
   } catch (error) {
+      console.error('Error en el servidor:', error);  // Para depurar errores en la consola
       return res.status(500).json({ message: 'Error en el servidor' });
   }
 };
 
 export default login;
-
-
-
-
