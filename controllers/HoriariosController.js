@@ -64,8 +64,7 @@ export const mostrarhorarioprofesor = async (req, res) => {
 
     // Obtener los horarios del profesor
     const horarios = await TablaHorario.findAll({
-      where: { profesorid: profesorId },
-      include: [{ model: TablaCurso }, { model: TablaMateria }]
+      where: { profesorid: profesorId }
     });
 
     return res.json(horarios);
