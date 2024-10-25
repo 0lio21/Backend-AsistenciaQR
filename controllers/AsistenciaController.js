@@ -18,15 +18,16 @@ export const registrarAsistencia = async (req, res) => {
         const hora = fechaActual.toTimeString().split(' ')[0]; // Formato 'HH:MM:SS'
 
         // Crear una nueva entrada en la tabla de asistencias
+        // Cambia 'Fecha' a 'fecha' y 'HoraLlegada' a 'horallegada'
         const nuevaAsistencia = await TablaAsistencia.create({
             profesorid: decoded.id,
-            Fecha: fecha,
-            HoraLlegada: hora
+            fecha: fecha,           // En minúsculas según el modelo
+            horallegada: hora       // En minúsculas según el modelo
         });
-
+     
         // Responder con éxito
         return res.status(200).json({
-            message: 'Asistencia registrada con éxito',
+            message: 'Asistencia registrada con éxito', nuevaAsistencia
         });
     } catch (error) {
         if (error instanceof jwt.JsonWebTokenError) {
@@ -50,7 +51,7 @@ export const contarAsistenciasEinasistencias = async (req, res) => {
     const token = authorization.split(' ')[1];
     console.log(authorization);
     console.log(token);
-    
+
     try {
         const decoded = jwt.verify(token, secretKey);  // Verificar el token
         const profesorId = decoded.id;  // Obtener el ID del profesor
