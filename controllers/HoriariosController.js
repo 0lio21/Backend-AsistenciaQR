@@ -10,45 +10,35 @@ function formatTime(time) {
   return time.length === 5 ? time + ":00" : time;
 }
 
+
 export const insertarHorario = async (req, res) => {
-  const { profesorId, cursoId, materiaId, dia, fechaInicio, fechaFin } = req.body;
-  console.log(profesorId, cursoId, materiaId, dia, fechaInicio, fechaInicio);
+  const { profesorid, cursoid, materiaid, dia, fechainicio, fechafin } = req.body;
+
   try {
-    // Buscar el Profesor por ID en la tabla de profesores
-    const profesor = await TablaProfesor.findByPk(profesorId);
-    if (!profesor) {
-      return res.status(404).json({ error: 'Profesor no encontrado' });
-    }
-
-    // Buscar el Curso por ID en la tabla de cursos
-    const curso = await TablaCurso.findOne({
-      where: { cursoid: cursoId },
-      attributes: ['cursoid', 'anio', 'division']  // Esto está correcto
-    });
-      
-  
-    // Buscar la Materia por ID en la tabla de materias
-    const materia = await TablaMateria.findByPk(materiaId);
-    if (!materia) {
-      return res.status(404).json({ error: 'Materia no encontrada' });
-    }
-
-    // Insertar el nuevo horario en la tabla de horarios
+    // Crear un nuevo horario en la tabla 'horarios'
     const nuevoHorario = await TablaHorario.create({
-      profesorid: profesorId,
-      cursoid: cursoId,
-      materiaid: materiaId,
+      profesorid: profesorid,
+      cursoid: cursoid,
+      materiaid: materiaid,
       dia: dia,
-      fechainicio: fechaInicio,
-      fechafin: fechaFin
+      fechainicio: fechainicio,
+      fechafin: fechafin
     });
 
-    return res.status(201).json({ message: 'Horario insertado exitosamente', nuevoHorario });
+    // Responder con éxito
+    res.status(200).json({
+      message: 'Horario insertado exitosamente',
+      data: nuevoHorario
+    });
   } catch (error) {
     console.error('Error al insertar el horario:', error);
-    return res.status(500).json({ error: 'Error al insertar el horario' });
+    res.status(500).json({
+      message: 'Error al insertar el horario',
+      error: error.message
+    });
   }
 };
+
 
 
 export const mostrarhorarioprofesor = async (req, res) => {
