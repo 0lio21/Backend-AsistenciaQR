@@ -19,7 +19,7 @@ export const registrarAsistencia = async (req, res) => {
 
         // Crear una nueva entrada en la tabla de asistencias
         const nuevaAsistencia = await TablaAsistencia.create({
-            ProfesorID: decoded.id,
+            profesorid: decoded.id,
             Fecha: fecha,
             HoraLlegada: hora
         });
