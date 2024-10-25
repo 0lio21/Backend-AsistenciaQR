@@ -20,7 +20,7 @@ export const login = async (req, res) => {
           return res.status(401).json({ message: 'Contraseña incorrecta' });
       }
 
-      const token = jwt.sign({ id: profesor.id }, secretKey, { expiresIn: '20m' });  // Token con 20 minutos de duración
+      const token = jwt.sign({ id: profesor.id, rol: profesor.rol }, secretKey, { expiresIn: '20m' });
       return res.status(200).json({
         nombre: profesor.nombre,
         apellido: profesor.apellido,

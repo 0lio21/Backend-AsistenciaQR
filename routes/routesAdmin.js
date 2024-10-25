@@ -9,6 +9,14 @@ import { insertarMateria } from '../controllers/MateriasController.js';
 
 const routerAdmin = express.Router();
 
+/* TODO ES /api/admin */
+
+/* {
+    "correo": "equipodirectivo@example.edu.ar",
+    "password": "tecnica4"
+  }
+  
+ */
 // Rutas de administración de profesores
 routerAdmin.get('/profesores', verificarToken, checkRole('admin'), getAllprofesores);
 routerAdmin.get('/profesores/:id', verificarToken, checkRole('admin'), getprofesor);

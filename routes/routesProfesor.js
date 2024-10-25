@@ -7,6 +7,8 @@ import { checkRole } from '../Middlewares/checkRole.js';
 
 const routerProfesor = express.Router();
 
+   /*  TODO ES /api/profesor */
+
 // Rutas de asistencia para profesores
 routerProfesor.post('/login/asistencia', verificarToken, checkRole('profesor'), registrarAsistencia);
 routerProfesor.get('/login/contarasistencias', verificarToken, checkRole('profesor'), contarAsistenciasEinasistencias);
