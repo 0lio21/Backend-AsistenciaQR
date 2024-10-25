@@ -1,10 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import db from "./database/db.js";//base de datos
-import Routes from './routes/routes.js'//enrutador
-import { registrarAsistencia, contarAsistenciasEinasistencias} from './controllers/AsistenciaController.js';
 import login from './controllers/LoginController.js';
-
+import routerAdmin from './routes/routesAdmin.js';
+import routerProfesor from './routes/routesProfesor.js';
 
 const app = express();
 
@@ -15,12 +14,15 @@ const corsOptions = {
 
 
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cors(corsOptions));
-
-
 app.use(express.json());
-app.use('/api', Routes);
+
+// Rutas de autenticación
+app.post('/api/login', login);
+
+// Rutas de admin y profesor
+app.use('/api/admin', routerAdmin);      // Rutas exclusivas para administradores
+app.use('/api/profesor', routerProfesor); // Rutas exclusivas para profesores
 
 try {
     db.authenticate();

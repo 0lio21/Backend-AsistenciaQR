@@ -32,6 +32,11 @@ export const TablaProfesor = db.define('profesores', {
   password: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  rol: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'profesor'
   }
 }, {
   timestamps: false
