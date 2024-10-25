@@ -1,7 +1,7 @@
 import TablaCurso from './ModelCursos.js';
 import TablaHorario from './ModelHorario.js';
 import TablaMateria from './ModelMateria.js';
-import TablaProfesor from './ModelProfesor.js'
+import TablaProfesor from './ModelProfesor.js';
 
 // Definir relaciones
 TablaCurso.hasMany(TablaHorario, { foreignKey: 'cursoid' });

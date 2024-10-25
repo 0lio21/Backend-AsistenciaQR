@@ -1,8 +1,5 @@
 import db from "../database/db.js";
 import { DataTypes } from "sequelize";
-import Curso from './ModelCursos.js'; // Importa el modelo Curso
-import Asistencia from './ModelAsistencia.js'; // Importa el modelo Asistencia
-import Horario from './ModelHorario.js'; // Importa el modelo Horario
 
 export const TablaProfesor = db.define('profesores', {
   id: {
@@ -12,63 +9,32 @@ export const TablaProfesor = db.define('profesores', {
   },
   nombre: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      len: [2, 50],
-      notEmpty: true
-    }
+    allowNull: false
   },
   apellido: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      len: [2, 50],
-      notEmpty: true
-    }
+    allowNull: false
   },
   dni: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
-    validate: {
-      isNumeric: true,
-      len: [8, 8]
-    }
+    unique: true
   },
   telefono: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      isNumeric: true,
-      len: [6, 15]
-    }
+    allowNull: false
   },
   correo: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
-    validate: {
-      isEmail: true,
-      notEmpty: true
-    }
+    unique: true
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      len: [8, 100],
-      notEmpty: true
-    }
+    allowNull: false
   }
 }, {
   timestamps: false
 });
 
-// Relación entre Profesor y Curso
-TablaProfesor.hasMany(Curso, { foreignKey: 'profesorId', onDelete: 'CASCADE' });
-
-// Relación entre Profesor y Asistencia
-TablaProfesor.hasMany(Asistencia, { foreignKey: 'profesorId', onDelete: 'CASCADE' });
-
-// Relación entre Profesor y Horario
-TablaProfesor.hasMany(Horario, { foreignKey: 'profesorId', onDelete: 'CASCADE' }); 
+export default TablaProfesor;
