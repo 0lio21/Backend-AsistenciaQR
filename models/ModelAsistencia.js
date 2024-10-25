@@ -20,7 +20,7 @@ export const TablaAsistencia = db.define('asistencias', {
   },
   fecha: {
     type: DataTypes.DATEONLY,  // Solo la parte de la fecha
-    allowNull: false           // Cambiado a false si deseas que esta columna no sea nula
+    allowNull: true           // Cambiado a false si deseas que esta columna no sea nula
   },
   horallegada: {
     type: DataTypes.TIME,      // Solo la hora
