@@ -9,7 +9,7 @@ const usuario = process.env.POSTGRES_USER;
 const password = process.env.POSTGRES_PASSWORD;
 const hostvercel = process.env.POSTGRES_HOST;
 
-/* const db = new Sequelize(bd, usuario, password,{
+ const db = new Sequelize(bd, usuario, password,{
 host:hostvercel,
     dialect: 'postgres',
     dialectModule:pg,
@@ -20,8 +20,8 @@ host:hostvercel,
         }
       }
     })   
- */
-const db = new Sequelize('bdtecnica', 'root', '1234', {
+ 
+/* const db = new Sequelize('bdtecnica', 'root', '1234', {
   host: 'localhost',   // El host de MySQL, cámbialo si es diferente
   dialect: 'mysql',    // Dialecto para MySQL
   dialectModule: mysql2,  // Usando el paquete mysql2
@@ -32,7 +32,7 @@ const db = new Sequelize('bdtecnica', 'root', '1234', {
     }
   },
 });
-
+ */
 
 export default db;
 
