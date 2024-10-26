@@ -43,7 +43,7 @@ export const insertarHorario = async (req, res) => {
 
 export const mostrarhorarioprofesor = async (req, res) => {
   try {
-    const { profesorId } = req.body;
+    const profesorId = req.user.id; // Ahora usamos el ID del token
 
     // Buscar el profesor por ID
     const profesor = await TablaProfesor.findByPk(profesorId);
@@ -63,6 +63,7 @@ export const mostrarhorarioprofesor = async (req, res) => {
     return res.status(500).json({ error: 'Error al obtener horarios' });
   }
 };
+
 
 
 export const mostrarhorariocurso = async (req, res) => {
