@@ -41,10 +41,11 @@ export const insertarHorario = async (req, res) => {
 
 export const mostrarhorarioprofesor = async (req, res) => {
   try {
-    const profesorId = req.user.id; // ID del profesor obtenido del token
+    const profesorId = req.user.id; // Ahora usamos el ID del token
 
-    // Verificar si el profesor existe
+    // Buscar el profesor por ID
     const profesor = await TablaProfesor.findByPk(profesorId);
+
     if (!profesor) {
       return res.status(404).json({ error: 'Profesor no encontrado' });
     }
@@ -73,10 +74,11 @@ export const mostrarhorarioprofesor = async (req, res) => {
 
     return res.json(respuestaFormateada);
   } catch (error) {
-    console.error('Error al obtener horarios:', error);
-    return res.status(500).json({ error: 'Error al obtener horarios' });
+    console.error('Error al obtener horarios:', error); // Ahora imprimimos el error completo en la consola
+    return res.status(500).json({ error: 'Error al obtener horarios', details: error.message });
   }
 };
+
 
 
 
