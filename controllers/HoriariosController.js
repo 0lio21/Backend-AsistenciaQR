@@ -39,47 +39,43 @@ export const insertarHorario = async (req, res) => {
   }
 };
 
+
 export const mostrarhorarioprofesor = async (req, res) => {
   try {
     const profesorId = req.user.id; // Ahora usamos el ID del token
 
-    // Buscar el profesor por ID
-    const profesor = await TablaProfesor.findByPk(profesorId);
-
-    if (!profesor) {
-      return res.status(404).json({ error: 'Profesor no encontrado' });
-    }
-
     // Obtener los horarios del profesor
     const horarios = await TablaHorario.findAll({
-      where: { profesorid: profesorId }
+      where: { profesorid: profesorId },
+      include: [
+        {
+          model: TablaCurso,
+          as: 'curso',
+          attributes: ['anio', 'division']
+        },
+        {
+          model: TablaMateria,
+          as: 'materia',
+          attributes: ['nombre']
+        }
+      ]
     });
 
-    // Mapear y formatear cada horario
-    const respuestaFormateada = await Promise.all(
-      horarios.map(async (horario) => {
-        // Buscar el curso y la materia para cada horario
-        const curso = await TablaCurso.findByPk(horario.cursoid, { attributes: ['Anio', 'Division'] });
-        const materia = await TablaMateria.findByPk(horario.materiaid, { attributes: ['NombreMateria'] });
+    // Mapear los datos para retornar el formato deseado
+    const respuesta = horarios.map(horario => ({
+      dia: horario.dia,
+      curso: `${horario.curso.anio}° ${horario.curso.division}`,
+      materia: horario.materia.nombre,
+      fechainicio: horario.fechainicio,
+      fechafin: horario.fechafin
+    }));
 
-        return {
-          dia: horario.dia,
-          curso: curso ? `${curso.Anio}° ${curso.Division}` : "Curso no encontrado",
-          materia: materia ? materia.NombreMateria : "Materia no encontrada",
-          fechainicio: horario.fechainicio,
-          fechafin: horario.fechafin
-        };
-      })
-    );
-
-    return res.json(respuestaFormateada);
+    return res.json(respuesta);
   } catch (error) {
-    console.error('Error al obtener horarios:', error); // Ahora imprimimos el error completo en la consola
-    return res.status(500).json({ error: 'Error al obtener horarios', details: error.message });
+    console.error('Error al obtener horarios:', error);
+    return res.status(500).json({ error: 'Error al obtener horarios' });
   }
 };
-
-
 
 
 
