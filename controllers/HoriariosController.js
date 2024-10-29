@@ -40,37 +40,24 @@ export const insertarHorario = async (req, res) => {
 };
 
 
+
 export const mostrarhorarioprofesor = async (req, res) => {
   try {
     const profesorId = req.user.id; // Ahora usamos el ID del token
 
+    // Buscar el profesor por ID
+    const profesor = await TablaProfesor.findByPk(profesorId);
+
+    if (!profesor) {
+      return res.status(404).json({ error: 'Profesor no encontrado' });
+    }
+
     // Obtener los horarios del profesor
     const horarios = await TablaHorario.findAll({
-      where: { profesorid: profesorId },
-      include: [
-        {
-          model: TablaCurso,
-          as: 'curso',
-          attributes: ['anio', 'division']
-        },
-        {
-          model: TablaMateria,
-          as: 'materia',
-          attributes: ['nombre']
-        }
-      ]
+      where: { profesorid: profesorId }
     });
 
-    // Mapear los datos para retornar el formato deseado
-    const respuesta = horarios.map(horario => ({
-      dia: horario.dia,
-      curso: `${horario.curso.anio}° ${horario.curso.division}`,
-      materia: horario.materia.nombre,
-      fechainicio: horario.fechainicio,
-      fechafin: horario.fechafin
-    }));
-
-    return res.json(respuesta);
+    return res.json(horarios);
   } catch (error) {
     console.error('Error al obtener horarios:', error);
     return res.status(500).json({ error: 'Error al obtener horarios' });
