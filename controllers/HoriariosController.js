@@ -39,7 +39,20 @@ export const insertarHorario = async (req, res) => {
   }
 };
 
+export const mostrarTodosLosHorarios = async (req, res) => {
+  try {
+    // Obtener todos los horarios de la tabla
+    const horarios = await TablaHorario.findAll({
+      include: [{ model: TablaProfesor }, { model: TablaCurso }, { model: TablaMateria }]
+    });
 
+    // Devolver la lista de horarios
+    res.status(200).json(horarios);
+  } catch (error) {
+    console.error('Error al obtener todos los horarios:', error);
+    res.status(500).json({ error: 'Error al obtener todos los horarios' });
+  }
+};
 
 export const mostrarhorarioprofesor = async (req, res) => {
   try {
@@ -87,6 +100,32 @@ export const mostrarhorariocurso = async (req, res) => {
   } catch (error) {
     console.error('Error al obtener horarios:', error);
     return res.status(500).json({ error: 'Error al obtener horarios' });
+  }
+};
+
+export const eliminarHorario = async (req, res) => {
+  const { horarioId } = req.params; // Obtenemos el ID del horario desde los parámetros de la URL
+
+  try {
+    // Buscamo el horario por su ID
+    const horario = await TablaHorario.findByPk(horarioId);
+
+    // Si el horario no existe, devolvemo un  404
+    if (!horario) {
+      return res.status(404).json({ error: 'Horario no encontrado' });
+    }
+
+    // Eliminamos el horario
+    await horario.destroy();
+
+    // Enviamos una respuesta de exito
+    res.status(200).json({ message: 'Horario eliminado exitosamente' });
+  } catch (error) {
+    console.error('Error al eliminar el horario:', error);
+    res.status(500).json({
+      message: 'Error al eliminar el horario',
+      error: error.message
+    });
   }
 };
 

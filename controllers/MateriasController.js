@@ -27,4 +27,27 @@ export const ListadoMaterias = async (req, res) => {
     }
 }
 
+export const eliminarMateria = async (req, res) => {
+  const { materiaId } = req.params; // Obtener el ID de la materia desde los parámetros de la URL
+
+  try {
+      // Buscar la materia por ID
+      const materia = await TablaMateria.findByPk(materiaId);
+
+      // Verificar si la materia existe
+      if (!materia) {
+          return res.status(404).json({ error: 'Materia no encontrada' });
+      }
+
+      // Eliminar la materia
+      await materia.destroy();
+
+      // Responder con éxito
+      res.status(200).json({ message: 'Materia eliminada exitosamente' });
+  } catch (error) {
+      console.error('Error al eliminar la materia:', error);
+      res.status(500).json({ error: 'Error al eliminar la materia' });
+  }
+};
+
 
