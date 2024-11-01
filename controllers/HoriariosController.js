@@ -42,9 +42,7 @@ export const insertarHorario = async (req, res) => {
 export const mostrarTodosLosHorarios = async (req, res) => {
   try {
     // Obtener todos los horarios de la tabla
-    const horarios = await TablaHorario.findAll({
-      include: [{ model: TablaProfesor }, { model: TablaCurso }, { model: TablaMateria }]
-    });
+    const horarios = await TablaHorario.findAll({ });
 
     // Devolver la lista de horarios
     res.status(200).json(horarios);
