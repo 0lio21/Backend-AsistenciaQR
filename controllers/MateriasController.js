@@ -3,20 +3,21 @@ import TablaMateria from '../models/ModelMateria.js';
 
 // Función para insertar una nueva materia
 export const insertarMateria = async (req, res) => {
-    const { nombremateria } = req.body;  // Extraer NombreMateria del cuerpo de la petición
-    try {
-      // Inserta la nueva materia
-      const nuevaMateria = await TablaMateria.create({
-        NombreMateria: nombremateria  // Usar NombreMateria correctamente
-      });
-  
-      console.log('Materia insertada exitosamente:', nuevaMateria);
-      res.status(201).json({ message: 'Materia insertada exitosamente', nuevaMateria });
-    } catch (error) {
-      console.error('Error al insertar la materia:', error);
-      res.status(500).json({ error: 'Error al insertar la materia' });
-    }
-  };
+  const { nombremateria } = req.body; // Extraer NombreMateria del cuerpo de la petición
+  try {
+    // Inserta la nueva materia
+    const nuevaMateria = await TablaMateria.create({
+      NombreMateria: nombremateria, // Usar NombreMateria correctamente
+    });
+
+    console.log('Materia insertada exitosamente:', nuevaMateria);
+    res.status(201).json({ message: 'Materia insertada exitosamente', nuevaMateria });
+  } catch (error) {
+    console.error('Error al insertar la materia:', error.message); // Muestra el mensaje de error
+    res.status(500).json({ error: 'Error al insertar la materia', details: error.message });
+  }
+};
+
 
 export const ListadoMaterias = async (req, res) => {
     try {
