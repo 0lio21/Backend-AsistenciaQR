@@ -7,7 +7,7 @@ export const insertarMateria = async (req, res) => {
     try {
       // Inserta la nueva materia
       const nuevaMateria = await TablaMateria.create({
-        NombreMateria: NombreMateria  // Usar NombreMateria correctamente
+        NombreMateria: nombremateria  // Usar NombreMateria correctamente
       });
   
       console.log('Materia insertada exitosamente:', nuevaMateria);
