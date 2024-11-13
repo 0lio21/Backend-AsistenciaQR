@@ -3,7 +3,7 @@ import TablaMateria from '../models/ModelMateria.js';
 
 // Función para insertar una nueva materia
 export const insertarMateria = async (req, res) => {
-    const { NombreMateria } = req.body;  // Extraer NombreMateria del cuerpo de la petición
+    const { nombremateria } = req.body;  // Extraer NombreMateria del cuerpo de la petición
     try {
       // Inserta la nueva materia
       const nuevaMateria = await TablaMateria.create({
